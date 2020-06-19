@@ -15,6 +15,6 @@ jobs:
         uses: actions/setup-node@v1
       - run: npm install
       - run: npm test
-      - run: npx vercel --token $VERCEL_TOKEN --confirm --prod
+      - run: npx vercel --token $VERCEL_TOKEN --confirm --prod --regions icn1
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
