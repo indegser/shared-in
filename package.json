@@ -13,9 +13,13 @@
   "dependencies": {
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
+    "firebase": "^7.15.3",
     "next": "9.4.4",
+    "open-graph-scraper": "^4.1.1",
     "react": "16.13.1",
-    "react-dom": "16.13.1"
+    "react-dom": "16.13.1",
+    "react-hook-form": "^5.7.2",
+    "swr": "^0.2.3"
   },
   "devDependencies": {
     "@testing-library/react": "^10.3.0",

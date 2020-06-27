@@ -1,4 +1,10 @@
 import styled from "@emotion/styled";
+import { FC } from "react";
+import Site from "./Site";
+
+interface Props {
+  share: IShare;
+}
 
 const Layout = styled.article`
   padding: 1em 0;
@@ -10,25 +16,21 @@ const Layout = styled.article`
 
 const Attr = styled.h5`
   margin: 0;
-  font-size: 0.825rem;
-  font-weight: 700;
-  margin-bottom: 0.25em;
-  font-family: "Noto Serif KR", serif;
-  color: #514c4c;
+  font-size: 16px;
+  font-weight: 500;
 `;
 
-const Title = styled.h3`
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 700;
-  font-family: "Noto Serif KR", serif;
-`;
+const Share: FC<Props> = ({ share }) => {
+  const attr = [share.company, share.team]
+    .filter((item) => item?.length > 0)
+    .join(", ");
 
-const Share = () => {
+  if (attr.length === 0) return null;
+
   return (
     <Layout>
-      <Attr>네이버랩스. 플랫폼 엔지니어링. 프론트엔드</Attr>
-      <Title>Mocking API Requests with Jest</Title>
+      <Attr>{attr}</Attr>
+      <Site share={share} />
     </Layout>
   );
 };
