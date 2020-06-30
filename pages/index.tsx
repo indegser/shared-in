@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Home from "pages/Home";
+import Home from "pages/home/Home";
 
 export default function Page() {
   return (

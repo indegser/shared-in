@@ -1,5 +1,6 @@
 import { forwardRef } from "react";
 import styled from "@emotion/styled";
+import ShareInput from "./ShareInput";
 
 interface Props {}
 
@@ -21,13 +22,14 @@ const Textarea = styled.textarea`
   outline: none;
   box-shadow: inset 0 1px 0 rgba(225, 228, 232, 0.2);
   resize: none;
+  width: 100%;
+  box-sizing: border-box;
 `;
 
-const ShareFormUrl = forwardRef<HTMLTextAreaElement, Props>((props, ref) => {
+const ShareFormUrl = forwardRef<HTMLInputElement, Props>((props, ref) => {
   return (
     <Layout>
-      <Textarea rows={3} ref={ref} name="url"></Textarea>
-      <Preview></Preview>
+      <ShareInput label="URL" name="url" ref={ref} />
     </Layout>
   );
 });

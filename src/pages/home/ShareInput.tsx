@@ -19,7 +19,9 @@ const Input = styled.input`
   border: 1px solid #e1e4e8;
   border-radius: 6px;
   outline: none;
+  width: 100%;
   box-shadow: inset 0 1px 0 rgba(225, 228, 232, 0.2);
+  box-sizing: border-box;
 `;
 
 const Label = styled.label`

@@ -13,4 +13,12 @@ interface IShare {
   title: string;
   image: string;
   description: string;
+  uid: string;
+}
+
+interface IUser {
+  uid: string;
+  displayName: string;
+  email: string;
+  photoURL?: string;
 }

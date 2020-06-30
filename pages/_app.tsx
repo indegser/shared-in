@@ -1,8 +1,18 @@
 import GlobalStyle from "ui/GlobalStyle";
 import Head from "next/head";
 import Header from "ui/header/Header";
+import { useEffect } from "react";
+import { useAuthStore } from "common/store";
+import { auth } from "common/modules/firebase";
 
 export default function ({ Component, pageProps }) {
+  const updateStatus = useAuthStore((s) => s.updateStatus);
+  useEffect(() => {
+    auth().onAuthStateChanged((currentUser) => {
+      updateStatus(currentUser);
+    });
+  }, [updateStatus]);
+
   return (
     <>
       <Head>
