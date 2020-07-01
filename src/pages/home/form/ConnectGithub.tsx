@@ -44,7 +44,7 @@ const ConnectGithub = () => {
   );
 
   return (
-    <Layout onClick={signInWithGithub}>
+    <Layout data-testid="sign-in-with-github" onClick={signInWithGithub}>
       <Github src="/images/github.svg"></Github>
       <NoBio>{message}</NoBio>
     </Layout>

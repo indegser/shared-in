@@ -7,8 +7,8 @@
     "build": "next build",
     "start": "next start",
     "pretest": "tsc --project . --noEmit",
-    "test": "jest",
-    "test:dev": "jest --watch"
+    "test": "jest --config config/jest.config.js",
+    "test:dev": "jest --watch --config config/jest.config.js"
   },
   "dependencies": {
     "@emotion/core": "^10.0.28",

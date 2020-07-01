@@ -3,8 +3,6 @@ import { useForm } from "react-hook-form";
 import ShareInput from "../ShareInput";
 import { db, auth } from "common/modules/firebase";
 import ShareFormUrl from "../ShareFormUrl";
-import { useEffect, useState } from "react";
-import ConnectGithub from "./ConnectGithub";
 
 const Layout = styled.div`
   padding: 1em;
@@ -42,17 +40,6 @@ type FormData = {
 };
 
 const ShareForm = () => {
-  /**
-   * null - not logged in
-   * undefined - not set
-   */
-  const [user, setUser] = useState<IUser>();
-  useEffect(() => {
-    auth().onAuthStateChanged((user: IUser) => {
-      setUser(user);
-    });
-  }, []);
-
   const { register, handleSubmit } = useForm<FormData>();
 
   const onSubmit = handleSubmit(async ({ company, team, url }) => {
@@ -87,12 +74,8 @@ const ShareForm = () => {
     },
   ];
 
-  if (typeof user === "undefined") {
-    return null;
-  }
-
-  return user ? (
-    <Layout>
+  return (
+    <Layout data-testid="share-form">
       <Form onSubmit={onSubmit}>
         <AuthorFields>
           {authorFields.map((field) => (
@@ -105,8 +88,6 @@ const ShareForm = () => {
         </ButtonLayout>
       </Form>
     </Layout>
-  ) : (
-    <ConnectGithub />
   );
 };
 

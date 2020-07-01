@@ -4,6 +4,7 @@ import ConnectGithub from "./ConnectGithub";
 
 const HomeForm = () => {
   const status = useAuthStore((s) => s.status);
+
   switch (status) {
     case AuthState.Authenticated:
       return <ShareForm />;
