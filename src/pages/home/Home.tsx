@@ -12,6 +12,7 @@ const Layout = styled.div`
 const ShareGrid = styled.div`
   display: grid;
   padding: 0 16px;
+  padding-bottom: 48px;
 `;
 
 const Home = () => {

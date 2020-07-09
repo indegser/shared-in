@@ -12,6 +12,7 @@ const converQuerySnapshotToArrayOfDocs = <T>(
 const fetchShares = async () =>
   db
     .collection("shares")
+    .orderBy("createdAt", "desc")
     .get()
     .then((snapshot) => converQuerySnapshotToArrayOfDocs<IShare>(snapshot));
 

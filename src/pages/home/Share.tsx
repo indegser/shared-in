@@ -36,7 +36,6 @@ const Attr = styled.h5`
   font-size: 14px;
   color: #111;
   font-weight: 500;
-  letter-spacing: 0.2px;
 `;
 
 const Share: FC<Props> = ({ share }) => {
