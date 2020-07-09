@@ -5,6 +5,8 @@ import { useEffect } from "react";
 import { useAuthStore } from "common/store";
 import { auth } from "common/modules/firebase";
 
+import "antd/dist/antd.css";
+
 export default function ({ Component, pageProps }) {
   const updateStatus = useAuthStore((s) => s.updateStatus);
   useEffect(() => {

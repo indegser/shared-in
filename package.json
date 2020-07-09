@@ -11,8 +11,10 @@
     "test:dev": "jest --watch --config config/jest.config.js"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.2.1",
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
+    "antd": "^4.4.1",
     "firebase": "^7.15.3",
     "next": "9.4.4",
     "open-graph-scraper": "^4.1.1",
