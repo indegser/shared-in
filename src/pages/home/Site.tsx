@@ -5,15 +5,18 @@ interface Props {
   share: IShare;
 }
 const Layout = styled.div`
-  margin-top: 4px;
-  font-size: 14px;
+  margin-top: 6px;
+  font-size: 16px;
   line-height: 1.48;
 `;
 
-const Title = styled.div``;
+const Title = styled.div`
+  font-weight: 500;
+`;
 
 const Desc = styled.div`
   color: #69727d;
+  font-size: 14px;
 `;
 
 const Site: FC<Props> = ({ share }) => {
