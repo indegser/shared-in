@@ -21,4 +21,6 @@ interface IUser {
   displayName: string;
   email: string;
   photoURL?: string;
+  team?: string;
+  company?: string;
 }

@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import ShareInput from "../ShareInput";
 import { db, auth } from "common/modules/firebase";
 import ShareFormUrl from "../ShareFormUrl";
+import { Button } from "antd";
+import { useAuthStore } from "common/store";
 
 const Layout = styled.div`
   padding: 1em;
@@ -40,7 +42,13 @@ type FormData = {
 };
 
 const ShareForm = () => {
-  const { register, handleSubmit } = useForm<FormData>();
+  const user = useAuthStore((s) => s.user);
+  const { register, handleSubmit, reset, formState } = useForm<FormData>({
+    defaultValues: {
+      team: user.team,
+      company: user.company,
+    },
+  });
 
   const onSubmit = handleSubmit(async ({ company, team, url }) => {
     const response = await fetch("/api/og", {
@@ -53,12 +61,27 @@ const ShareForm = () => {
     const json = await response.json();
     const uid = auth().currentUser?.uid;
 
-    db.collection("shares").add({
+    await db.collection("shares").add({
       company,
       team,
       uid,
+      createdAt: Date.now(),
       ...json,
     });
+
+    if (team !== user.team || company !== user.company) {
+      await db.collection("users").doc(uid).set(
+        {
+          team,
+          company,
+        },
+        {
+          merge: true,
+        }
+      );
+    }
+
+    reset({ company, team });
   });
 
   const authorFields = [
@@ -84,7 +107,9 @@ const ShareForm = () => {
         </AuthorFields>
         <ShareFormUrl ref={register} />
         <ButtonLayout>
-          <SubmitButton type="submit">Share</SubmitButton>
+          <Button htmlType="submit" disabled={formState.isSubmitting}>
+            Share
+          </Button>
         </ButtonLayout>
       </Form>
     </Layout>
