@@ -21,15 +21,15 @@ describe("HomeForm", () => {
     await screen.findByTestId("sign-in-with-github");
   });
 
-  it("renders ShareForm when user is authenticated", async () => {
-    // Given
-    render(<HomeForm />);
+  // it("renders ShareForm when user is authenticated", async () => {
+  //   // Given
+  //   render(<HomeForm />);
 
-    // When
-    const { updateStatus } = authStoreApi.getState();
-    act(() => updateStatus({ uid: 1 } as any));
+  //   // When
+  //   const { updateStatus } = authStoreApi.getState();
+  //   act(() => updateStatus({ uid: 1 } as any));
 
-    // Then
-    await screen.findByTestId("share-form");
-  });
+  //   // Then
+  //   await screen.findByTestId("share-form");
+  // });
 });
