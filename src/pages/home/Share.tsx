@@ -21,13 +21,22 @@ const ShareLink = styled.a`
   &:visited {
     color: #609;
   }
+
+  &:hover .site-title {
+    text-decoration: underline;
+  }
 `;
 
 const Attr = styled.h5`
+  /* margin: 0;
+  font-size: 14px;
+  font-weight: 400;
+  color: #343232; */
   margin: 0;
   font-size: 14px;
-  font-weight: 500;
   color: #111;
+  font-weight: 500;
+  letter-spacing: 0.2px;
 `;
 
 const Share: FC<Props> = ({ share }) => {

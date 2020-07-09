@@ -5,13 +5,13 @@ interface Props {
   share: IShare;
 }
 const Layout = styled.div`
-  margin-top: 6px;
+  margin-top: 4px;
   font-size: 16px;
   line-height: 1.48;
 `;
 
 const Title = styled.div`
-  font-weight: 500;
+  font-weight: 600;
 `;
 
 const Desc = styled.div`
@@ -27,7 +27,7 @@ const Site: FC<Props> = ({ share }) => {
 
   return (
     <Layout>
-      <Title>{title}</Title>
+      <Title className="site-title">{title}</Title>
       <Desc>{sitename}</Desc>
     </Layout>
   );
