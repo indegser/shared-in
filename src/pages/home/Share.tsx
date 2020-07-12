@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
-import { FC } from "react";
+import { FC, useMemo } from "react";
+import format from "date-fns/format";
 import Site from "./Site";
 
 interface Props {
@@ -14,44 +15,32 @@ const Layout = styled.article`
   }
 `;
 
-const ShareLink = styled.a`
-  text-decoration: none;
-  color: #0039bf;
-
-  &:visited {
-    color: #609;
-  }
-
-  &:hover .site-title {
-    text-decoration: underline;
-  }
+const Attr = styled.h5`
+  margin: 0;
+  font-size: 13px;
+  color: #111;
+  font-weight: 600;
 `;
 
-const Attr = styled.h5`
-  /* margin: 0;
-  font-size: 14px;
-  font-weight: 400;
-  color: #343232; */
-  margin: 0;
-  font-size: 14px;
-  color: #111;
+const Date = styled.span`
+  color: #666;
   font-weight: 500;
 `;
 
 const Share: FC<Props> = ({ share }) => {
-  const attr = [share.company, share.team]
-    .filter((item) => item?.length > 0)
-    .join(" › ");
-
-  if (attr.length === 0) return null;
+  const date = useMemo(() => {
+    return format(share.createdAt, "MM/dd/yyyy");
+  }, [share.createdAt]);
 
   return (
-    <ShareLink href={share.url} title={share.title}>
-      <Layout>
-        <Attr>{attr}</Attr>
-        <Site share={share} />
-      </Layout>
-    </ShareLink>
+    <Layout>
+      <Attr>
+        {share.team}
+        {`(@${share.company})`}
+        <Date>{` · ${date}`}</Date>
+      </Attr>
+      <Site share={share} />
+    </Layout>
   );
 };
 

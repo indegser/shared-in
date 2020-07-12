@@ -14,6 +14,7 @@ interface IShare {
   image: string;
   description: string;
   uid: string;
+  createdAt: number;
 }
 
 interface IUser {
