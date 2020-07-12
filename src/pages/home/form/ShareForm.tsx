@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import ShareInput from "../ShareInput";
 import { db, auth } from "common/modules/firebase";
 import ShareFormUrl from "../ShareFormUrl";
-import { Button } from "antd";
+import { Button, message } from "antd";
 import { useAuthStore } from "common/store";
 
 const Layout = styled.div`
@@ -82,6 +82,7 @@ const ShareForm = () => {
     }
 
     reset({ company, team });
+    message.success(`Successfully shared your team's bookmark`);
   });
 
   const authorFields = [
