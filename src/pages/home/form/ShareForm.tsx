@@ -5,6 +5,7 @@ import { db, auth } from "common/modules/firebase";
 import ShareFormUrl from "../ShareFormUrl";
 import { Button, message } from "antd";
 import { useAuthStore } from "common/store";
+import { useShareForm } from "./ShareForm.hooks";
 
 const Layout = styled.div`
   padding: 1em;
@@ -25,64 +26,41 @@ const ButtonLayout = styled.div`
   justify-content: flex-end;
 `;
 
-const SubmitButton = styled.button`
-  font-size: 14px;
-  color: white;
-  border: none;
-  box-sizing: border-box;
-  background: #2b2929;
-  padding: 8px 12px;
-  border-radius: 4px;
-`;
-
-type FormData = {
-  url: string;
-  company: string;
-  team: string;
-};
-
 const ShareForm = () => {
   const user = useAuthStore((s) => s.user);
-  const { register, handleSubmit, reset, formState } = useForm<FormData>({
-    defaultValues: {
-      team: user.team,
-      company: user.company,
-    },
-  });
+  const { register, handleSubmit, reset, formState } = useShareForm(user);
 
   const onSubmit = handleSubmit(async ({ company, team, url }) => {
-    const response = await fetch("/api/og", {
-      method: "POST",
-      body: JSON.stringify({ url }),
-      headers: {
-        "content-type": "application/json",
-      },
-    });
-    const json = await response.json();
-    const uid = auth().currentUser?.uid;
-
-    await db.collection("shares").add({
-      company,
-      team,
-      uid,
-      createdAt: Date.now(),
-      ...json,
-    });
-
-    if (team !== user.team || company !== user.company) {
-      await db.collection("users").doc(uid).set(
-        {
-          team,
-          company,
-        },
-        {
-          merge: true,
-        }
-      );
-    }
-
-    reset({ company, team });
-    message.success(`Successfully shared your team's bookmark`);
+    console.log(company, team, url);
+    // const response = await fetch("/api/og", {
+    //   method: "POST",
+    //   body: JSON.stringify({ url }),
+    //   headers: {
+    //     "content-type": "application/json",
+    //   },
+    // });
+    // const json = await response.json();
+    // const uid = auth().currentUser?.uid;
+    // await db.collection("shares").add({
+    //   company,
+    //   team,
+    //   uid,
+    //   createdAt: Date.now(),
+    //   ...json,
+    // });
+    // if (team !== user.team || company !== user.company) {
+    //   await db.collection("users").doc(uid).set(
+    //     {
+    //       team,
+    //       company,
+    //     },
+    //     {
+    //       merge: true,
+    //     }
+    //   );
+    // }
+    // reset({ company, team });
+    // message.success(`Successfully shared your team's bookmark`);
   });
 
   const authorFields = [
@@ -99,8 +77,8 @@ const ShareForm = () => {
   ];
 
   return (
-    <Layout data-testid="share-form">
-      <Form onSubmit={onSubmit}>
+    <Layout>
+      <Form data-testid="share-form" onSubmit={onSubmit}>
         <AuthorFields>
           {authorFields.map((field) => (
             <ShareInput key={field.name} ref={register} {...field} />
@@ -108,7 +86,11 @@ const ShareForm = () => {
         </AuthorFields>
         <ShareFormUrl ref={register} />
         <ButtonLayout>
-          <Button htmlType="submit" disabled={formState.isSubmitting}>
+          <Button
+            data-testid="share-form-submit"
+            htmlType="submit"
+            disabled={formState.isSubmitting}
+          >
             Share
           </Button>
         </ButtonLayout>

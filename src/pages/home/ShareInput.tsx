@@ -35,8 +35,8 @@ const ShareInput = forwardRef<HTMLInputElement, Props>((passedProps, ref) => {
   const { label, ...props } = passedProps;
   return (
     <Layout>
-      <Label>{label}</Label>
-      <Input ref={ref} {...props} />
+      <Label htmlFor={props.name}>{label}</Label>
+      <Input id={props.name} ref={ref} {...props} />
     </Layout>
   );
 });
