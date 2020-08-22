@@ -1,37 +1,26 @@
-import { render, screen, act } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import ShareForm from "./ShareForm";
-import { renderHook } from "@testing-library/react-hooks";
 import { authStoreApi } from "common/store";
-import { useShareForm } from "./ShareForm.hooks";
-
-jest.mock("common/modules/firebase.ts", () => ({
-  auth: () => {},
-  db: () => {},
-}));
 
 describe("ShareForm", () => {
   it("sets default value using authStore", async () => {
-    // Given
+    // Mock
+    const mockUser = {
+      team: "Team",
+      company: "MockCompany",
+    } as IUser;
+
     authStoreApi.setState({
-      user: {
-        uid: "1",
-        displayName: "user",
-        email: "user@gmail.com",
-        team: "B",
-        company: "A",
-      },
+      user: mockUser,
     });
 
+    // Given
     render(<ShareForm />);
 
-    const team = await screen.findByLabelText("Team");
-    expect((team as HTMLInputElement).value).toBe(
-      authStoreApi.getState().user.team
-    );
-
-    const company = await screen.findByLabelText("Company");
-    expect((company as HTMLInputElement).value).toBe(
-      authStoreApi.getState().user.company
-    );
+    // Then
+    const teamInput = screen.getByTestId("team") as HTMLInputElement;
+    const companyInput = screen.getByTestId("company") as HTMLInputElement;
+    expect(teamInput.value).toBe(mockUser.team);
+    expect(companyInput.value).toBe(mockUser.company);
   });
 });

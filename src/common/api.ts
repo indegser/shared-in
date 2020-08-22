@@ -1,4 +1,5 @@
-import firebase from "firebase/app";
+import firebase from "./firebase";
+
 const db = firebase.firestore();
 import { authStoreApi } from "./store";
 
@@ -43,6 +44,7 @@ const userApis = {
     const provider = new firebase.auth.GithubAuthProvider();
     return firebase.auth().signInWithPopup(provider);
   },
+  getUserByUid: (uid: IUser["uid"]) => db.collection("users").doc(uid).get(),
   createUser: (user: IUser) => {
     return db.collection("users").doc(user.uid).set(user);
   },

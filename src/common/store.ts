@@ -1,6 +1,6 @@
 import type { User } from "firebase";
 import create from "zustand";
-import { db } from "./modules/firebase";
+import api from "./api";
 
 export enum AuthState {
   NotSet,
@@ -22,8 +22,9 @@ export const [useAuthStore, authStoreApi] = create<IAuthStore>((set, get) => ({
     let user: IUser | null = null;
 
     try {
-      const document = await db.collection("users").doc(uid).get();
+      const document = await api.getUserByUid(uid);
       user = document.data() as IUser;
+
       set({ user, status: AuthState.Authenticated });
     } catch (err) {
       set({ user: null, status: AuthState.Anonymous });
