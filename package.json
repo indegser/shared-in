@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "pretest": "tsc --project . --noEmit",
-    "test": "jest --config config/jest.config.js",
+    "test": "jest --config config/jest.config.js --silent",
     "test:dev": "jest --watch --config config/jest.config.js"
   },
   "dependencies": {
@@ -15,19 +15,21 @@
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
     "antd": "^4.4.1",
+    "axios": "^0.20.0",
     "date-fns": "^2.14.0",
     "firebase": "^7.15.3",
+    "iconv-lite": "^0.6.2",
     "next": "9.4.4",
     "open-graph-scraper": "^4.1.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "react-hook-form": "^5.7.2",
     "swr": "^0.2.3",
     "zustand": "^2.2.3"
   },
   "devDependencies": {
     "@testing-library/react": "^10.3.0",
     "@testing-library/react-hooks": "^3.3.0",
+    "@testing-library/user-event": "^12.0.11",
     "@types/jest": "^26.0.0",
     "@types/node": "^14.0.13",
     "@types/react": "^16.9.38",
