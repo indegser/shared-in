@@ -15,13 +15,14 @@ const Title = styled.div`
   font-weight: 500;
   font-size: 16px;
   letter-spacing: 0.1px;
-  margin: 1px 0;
+  margin: 2px 0;
+  line-height: 21px;
 `;
 
 const Desc = styled.div`
   color: #69727d;
   font-size: 13px;
-  /* margin-top: 2px; */
+  line-height: 21 / 16;
 `;
 
 const ShareLink = styled.a`

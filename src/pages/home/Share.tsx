@@ -27,6 +27,13 @@ const Date = styled.span`
   font-weight: 500;
 `;
 
+const Comment = styled.p`
+  color: #111;
+  font-size: 14px;
+  margin: 0;
+  margin: 0.5em 0;
+`;
+
 const Share: FC<Props> = ({ share }) => {
   const date = useMemo(() => {
     return format(share.createdAt, "MM/dd/yyyy");
@@ -36,10 +43,11 @@ const Share: FC<Props> = ({ share }) => {
     <Layout>
       <Attr>
         {share.team}
-        {`(@${share.company})`}
+        {` @${share.company}`}
         <Date>{` · ${date}`}</Date>
       </Attr>
       <Site share={share} />
+      {share.comment && <Comment>{share.comment}</Comment>}
     </Layout>
   );
 };

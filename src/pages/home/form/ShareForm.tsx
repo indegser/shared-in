@@ -20,7 +20,7 @@ const ShareForm = () => {
   const [form] = Form.useForm();
 
   const onSubmit = async (values) => {
-    const { url, company, team } = values;
+    const { url, comment, company, team } = values;
     const { uid } = authStoreApi.getState().user;
     const openGraph = await api.fetchOpenGraph(url);
     await api.updateUserBio({ company, team });
@@ -28,6 +28,7 @@ const ShareForm = () => {
       company,
       team,
       uid,
+      comment,
       createdAt: Date.now(),
       ...openGraph,
     });
@@ -79,7 +80,7 @@ const ShareForm = () => {
           <Button
             size="middle"
             type="primary"
-            data-testid="share-form-submit"
+            data-testid="submit"
             htmlType="submit"
           >
             Share

@@ -13,6 +13,7 @@ interface IShare {
   title: string;
   image: string;
   description: string;
+  comment?: string;
   uid: string;
   createdAt: number;
 }

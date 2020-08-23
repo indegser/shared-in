@@ -1,6 +1,10 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import ShareForm from "./ShareForm";
 import { authStoreApi } from "common/store";
+import api from "common/api";
+
+jest.mock("common/api");
 
 describe("ShareForm", () => {
   it("sets default value using authStore", async () => {
@@ -22,5 +26,47 @@ describe("ShareForm", () => {
     const companyInput = screen.getByTestId("company") as HTMLInputElement;
     expect(teamInput.value).toBe(mockUser.team);
     expect(companyInput.value).toBe(mockUser.company);
+  });
+
+  it("calls updateUserBio when team is changed", async () => {
+    // Mock
+    const mockUser = { team: "A", company: "A" } as IUser;
+    authStoreApi.setState({ user: mockUser });
+
+    // Given
+    render(<ShareForm />);
+
+    // When
+    userEvent.type(screen.getByTestId("team"), "{backspace}B");
+    userEvent.click(screen.getByTestId("submit"));
+
+    // Then
+    await waitFor(() =>
+      expect(api.updateUserBio).toHaveBeenCalledWith({
+        team: "B",
+        company: "A",
+      })
+    );
+  });
+
+  it("calls updateUserBio when company is changed", async () => {
+    // Mock
+    const mockUser = { team: "A", company: "A" } as IUser;
+    authStoreApi.setState({ user: mockUser });
+
+    // Given
+    render(<ShareForm />);
+
+    // When
+    userEvent.type(screen.getByTestId("company"), "{backspace}B");
+    userEvent.click(screen.getByTestId("submit"));
+
+    // Then
+    await waitFor(() =>
+      expect(api.updateUserBio).toHaveBeenCalledWith({
+        team: "A",
+        company: "B",
+      })
+    );
   });
 });
