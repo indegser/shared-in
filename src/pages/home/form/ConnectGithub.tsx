@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
-import { useState } from "react";
-import { auth, db } from "common/modules/firebase";
+import api from "common/api";
 
 const Layout = styled.div`
   border-radius: 8px;
@@ -26,27 +25,19 @@ const Github = styled.img`
 
 const ConnectGithub = () => {
   const signInWithGithub = async () => {
-    const provider = new auth.GithubAuthProvider();
-    const { user } = await auth().signInWithPopup(provider);
-    const doc = await db.collection("users").doc(user.uid).set({
+    const { user } = await api.connectGithub();
+    await api.createUser({
       uid: user.uid,
       email: user.email,
       displayName: user.displayName,
       photoURL: user.photoURL,
     });
-
-    console.log(doc);
   };
-
-  // const nextMessage = 'Share articles your team read today.'
-  const [message] = useState(
-    "Connect Github account to share your team's links"
-  );
 
   return (
     <Layout data-testid="sign-in-with-github" onClick={signInWithGithub}>
       <Github src="/images/github.svg"></Github>
-      <NoBio>{message}</NoBio>
+      <NoBio>Connect Github account</NoBio>
     </Layout>
   );
 };
