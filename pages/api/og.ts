@@ -53,22 +53,19 @@ const crawlOpenGraph = async (link: string) => {
   }
 };
 
-export default (req: NextApiRequest, res: NextApiResponse) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { url } = req.body;
-  return crawlOpenGraph(url)
-    .then((data) => {
-      // if (error) throw new Error();
-      // console.log(result);
-      const result: IOpenGraph = {
-        title: data.ogTitle,
-        description: data.ogDescription,
-        url,
-        image: data.ogImage?.url,
-      };
-      res.json(result);
-    })
-    .catch((err) => {
-      console.log(err.message);
-      res.status(404).end();
-    });
+
+  try {
+    const data = await crawlOpenGraph(url);
+    const result: IOpenGraph = {
+      title: data.ogTitle,
+      description: data.ogDescription,
+      url,
+      image: data.ogImage?.url,
+    };
+    res.json(result);
+  } catch (err) {
+    res.status(400).send(err?.message);
+  }
 };

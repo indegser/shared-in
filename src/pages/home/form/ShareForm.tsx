@@ -22,19 +22,30 @@ const ShareForm = () => {
   const onSubmit = async (values) => {
     const { url, comment, company, team } = values;
     const { uid } = authStoreApi.getState().user;
-    const openGraph = await api.fetchOpenGraph(url);
-    await api.updateUserBio({ company, team });
-    await api.createShare({
-      company,
-      team,
-      uid,
-      comment,
-      createdAt: Date.now(),
-      ...openGraph,
-    });
 
-    message.success("Shared an url ", 1.5);
-    form.resetFields(["url", "comment"]);
+    let openGraph;
+    try {
+      openGraph = await api.fetchOpenGraph(url);
+    } catch (err) {
+      message.error("Could not fetch information from link", 1.5);
+      return;
+    }
+
+    try {
+      await api.updateUserBio({ company, team });
+      await api.createShare({
+        company,
+        team,
+        uid,
+        comment,
+        createdAt: Date.now(),
+        ...openGraph,
+      });
+      message.success("Shared an url ", 1.5);
+      form.resetFields(["url", "comment"]);
+    } catch (err) {
+      message.error("Something wrong. Could not create share", 1.5);
+    }
   };
 
   const authorFields = [
