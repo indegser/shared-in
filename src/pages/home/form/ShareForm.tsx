@@ -1,23 +1,13 @@
 import styled from "@emotion/styled";
-import { useForm } from "react-hook-form";
-import ShareInput from "../ShareInput";
-import { db, auth } from "common/modules/firebase";
-import ShareFormUrl from "../ShareFormUrl";
-import { Button } from "antd";
-import { useAuthStore } from "common/store";
+import { Button, Input, Form, message } from "antd";
+import { authStoreApi, useAuthStore } from "common/store";
+import api from "common/api";
 
 const Layout = styled.div`
   padding: 1em;
 `;
 
-const Form = styled.form``;
-
-const AuthorFields = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  grid-gap: 20px;
-  margin-bottom: 20px;
-`;
+const AuthorFields = styled.div``;
 
 const ButtonLayout = styled.div`
   margin-top: 20px;
@@ -25,89 +15,85 @@ const ButtonLayout = styled.div`
   justify-content: flex-end;
 `;
 
-const SubmitButton = styled.button`
-  font-size: 14px;
-  color: white;
-  border: none;
-  box-sizing: border-box;
-  background: #2b2929;
-  padding: 8px 12px;
-  border-radius: 4px;
-`;
-
-type FormData = {
-  url: string;
-  company: string;
-  team: string;
-};
-
 const ShareForm = () => {
-  const user = useAuthStore((s) => s.user);
-  const { register, handleSubmit, reset, formState } = useForm<FormData>({
-    defaultValues: {
-      team: user.team,
-      company: user.company,
-    },
-  });
+  const { team, company } = useAuthStore((s) => s.user);
+  const [form] = Form.useForm();
 
-  const onSubmit = handleSubmit(async ({ company, team, url }) => {
-    const response = await fetch("/api/og", {
-      method: "POST",
-      body: JSON.stringify({ url }),
-      headers: {
-        "content-type": "application/json",
-      },
-    });
-    const json = await response.json();
-    const uid = auth().currentUser?.uid;
+  const onSubmit = async (values) => {
+    const { url, comment, company, team } = values;
+    const { uid } = authStoreApi.getState().user;
 
-    await db.collection("shares").add({
-      company,
-      team,
-      uid,
-      createdAt: Date.now(),
-      ...json,
-    });
-
-    if (team !== user.team || company !== user.company) {
-      await db.collection("users").doc(uid).set(
-        {
-          team,
-          company,
-        },
-        {
-          merge: true,
-        }
-      );
+    let openGraph;
+    try {
+      openGraph = await api.fetchOpenGraph(url);
+    } catch (err) {
+      message.error("Could not fetch information from link", 1.5);
+      return;
     }
 
-    reset({ company, team });
-  });
+    try {
+      await api.updateUserBio({ company, team });
+      await api.createShare({
+        company,
+        team,
+        uid,
+        comment,
+        createdAt: Date.now(),
+        ...openGraph,
+      });
+      message.success("Shared an url ", 1.5);
+      form.resetFields(["url", "comment"]);
+    } catch (err) {
+      message.error("Something wrong. Could not create share", 1.5);
+    }
+  };
 
   const authorFields = [
     {
       name: "company",
       label: "Company",
-      placeholder: "Naver LABS",
+      placeholder: "Company",
     },
     {
       name: "team",
       label: "Team",
-      placeholder: "Platform Engineering",
+      placeholder: "Team",
     },
   ];
 
   return (
-    <Layout data-testid="share-form">
-      <Form onSubmit={onSubmit}>
+    <Layout>
+      <Form
+        name="share-form"
+        form={form}
+        labelCol={{ span: 4 }}
+        data-testid="share-form"
+        onFinish={onSubmit}
+        initialValues={{
+          team,
+          company,
+        }}
+      >
         <AuthorFields>
-          {authorFields.map((field) => (
-            <ShareInput key={field.name} ref={register} {...field} />
+          {authorFields.map(({ name, label, placeholder }) => (
+            <Form.Item required key={name} name={name} label={label}>
+              <Input data-testid={name} placeholder={placeholder} />
+            </Form.Item>
           ))}
         </AuthorFields>
-        <ShareFormUrl ref={register} />
+        <Form.Item label="URL" required name="url">
+          <Input />
+        </Form.Item>
+        <Form.Item label="Comment" name="comment">
+          <Input.TextArea rows={4} />
+        </Form.Item>
         <ButtonLayout>
-          <Button htmlType="submit" disabled={formState.isSubmitting}>
+          <Button
+            size="middle"
+            type="primary"
+            data-testid="submit"
+            htmlType="submit"
+          >
             Share
           </Button>
         </ButtonLayout>
