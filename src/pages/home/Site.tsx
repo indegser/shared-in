@@ -7,7 +7,7 @@ interface Props {
 const Layout = styled.div`
   font-size: 15px;
   line-height: 1.48;
-  display: inline-grid;
+  display: grid;
   justify-content: flex-start;
 `;
 
@@ -50,7 +50,7 @@ const Site: FC<Props> = ({ share }) => {
   }, [url]);
 
   return (
-    <ShareLink>
+    <ShareLink href={url} title={title}>
       <Layout>
         <Title className="site-title">{title}</Title>
         <Desc>{sitename}</Desc>
