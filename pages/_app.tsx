@@ -45,9 +45,17 @@ export default function ({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>Great team share great things | SharedIn</title>
+        <title>Great Teams Share Great Things - SharedIn</title>
+        <meta
+          name="og:title"
+          content="Great Teams Share Great Things - SharedIn"
+        />
         <meta
           name="description"
+          content="Find out what other teams are reading and share your team's reading list"
+        />
+        <meta
+          name="og:description"
           content="Find out what other teams are reading and share your team's reading list"
         />
         <link
