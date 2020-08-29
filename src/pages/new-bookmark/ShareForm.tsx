@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { Button, Input, Form, message } from "antd";
+import { useRouter } from "next/router";
 import { authStoreApi, useAuthStore } from "common/store";
 import api from "common/api";
 
@@ -16,6 +17,7 @@ const ButtonLayout = styled.div`
 `;
 
 const ShareForm = () => {
+  const router = useRouter();
   const { team, company } = useAuthStore((s) => s.user);
   const [form] = Form.useForm();
 
@@ -43,6 +45,7 @@ const ShareForm = () => {
       });
       message.success("Shared an url ", 1.5);
       form.resetFields(["url", "comment"]);
+      router.push("/");
     } catch (err) {
       message.error("Something wrong. Could not create share", 1.5);
     }
