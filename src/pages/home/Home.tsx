@@ -2,7 +2,6 @@ import styled from "@emotion/styled";
 import Share from "./Share";
 import useSWR from "swr";
 import api from "common/api";
-import HomeForm from "./form/HomeForm";
 
 const Layout = styled.div`
   max-width: 640px;
@@ -20,7 +19,6 @@ const Home = () => {
 
   return (
     <Layout>
-      <HomeForm />
       <ShareGrid>
         {data?.map((share) => (
           <Share key={share.id} share={share} />
