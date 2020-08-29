@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { useAuthStore } from "common/store";
+import Link from "next/link";
 
 const Layout = styled.div`
   display: grid;
@@ -49,7 +50,9 @@ const UserMenu = () => {
   return (
     <div>
       <Layout>
-        <MenuLink>{plus}</MenuLink>
+        <Link href="/new-bookmark" passHref>
+          <MenuLink>{plus}</MenuLink>
+        </Link>
         {user.photoURL ? <UserAvatar src={user.photoURL} /> : <UserAvatar />}
       </Layout>
     </div>
