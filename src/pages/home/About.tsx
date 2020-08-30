@@ -4,6 +4,10 @@ import Link from "next/link";
 const Layout = styled.div`
   position: relative;
   width: 240px;
+
+  @media (max-width: 820px) {
+    display: none;
+  }
 `;
 
 const Content = styled.div`
