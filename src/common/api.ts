@@ -59,6 +59,9 @@ const userApis = {
       .doc(user.uid)
       .set({ team, company }, { merge: true });
   },
+  signOut: () => {
+    return firebase.auth().signOut();
+  },
 };
 
 export default {

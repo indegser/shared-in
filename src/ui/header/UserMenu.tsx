@@ -1,6 +1,9 @@
 import styled from "@emotion/styled";
 import { useAuthStore } from "common/store";
 import Link from "next/link";
+import { Dropdown, Menu, message } from "antd";
+import { ComponentProps } from "react";
+import api from "common/api";
 
 const Layout = styled.div`
   display: grid;
@@ -47,15 +50,44 @@ const UserMenu = () => {
       />
     </svg>
   );
+
+  const handleMenuClick: ComponentProps<typeof Menu>["onClick"] = async ({
+    key,
+  }) => {
+    switch (key) {
+      case "0": {
+        try {
+          await api.signOut();
+        } catch (err) {
+          message.error(`Failed to sign out, ${err.message}`, 1.5);
+        }
+        break;
+      }
+    }
+  };
+
+  const menu = (
+    <Menu style={{ minWidth: 180 }} onClick={handleMenuClick}>
+      <Menu.Item key="0">Sign Out</Menu.Item>
+    </Menu>
+  );
+
   return (
-    <div>
-      <Layout>
-        <Link href="/new-bookmark" passHref>
-          <MenuLink>{plus}</MenuLink>
-        </Link>
-        {user.photoURL ? <UserAvatar src={user.photoURL} /> : <UserAvatar />}
-      </Layout>
-    </div>
+    <Layout>
+      <Link href="/new-bookmark" passHref>
+        <MenuLink>{plus}</MenuLink>
+      </Link>
+      <Dropdown
+        placement="bottomRight"
+        arrow
+        overlay={menu}
+        trigger={["click"]}
+      >
+        <a onClick={(e) => e.preventDefault()}>
+          {user.photoURL ? <UserAvatar src={user.photoURL} /> : <UserAvatar />}
+        </a>
+      </Dropdown>
+    </Layout>
   );
 };
 
