@@ -4,9 +4,7 @@ import { useAuthStore, AuthState } from "common/store";
 import Spinner from "ui/Spinner";
 
 const Layout = styled.div`
-  max-width: 640px;
-  margin: 0 auto;
-  padding: 2em 0;
+  padding: 1em 0;
 `;
 
 const NewBookmark = () => {

@@ -3,17 +3,14 @@ import Link from "next/link";
 import SignIn from "./SignIn";
 import { useAuthStore, AuthState } from "common/store";
 import UserMenu from "./UserMenu";
-
-const Layout = styled.nav`
-  padding: 1.2em 1em;
-`;
+import Layout from "ui/Layout";
+import Spinner from "ui/Spinner";
 
 const Content = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 960px;
-  margin: 0 auto;
+  height: 64px;
 `;
 
 const Logo = styled.a`
@@ -28,8 +25,20 @@ const Logo = styled.a`
 
 const Header = () => {
   const authStatus = useAuthStore((s) => s.status);
-  const authMenu =
-    authStatus === AuthState.Authenticated ? <UserMenu /> : <SignIn />;
+
+  const renderAuthMenu = () => {
+    switch (authStatus) {
+      case AuthState.Authenticated: {
+        return <UserMenu />;
+      }
+      case AuthState.Anonymous: {
+        return <SignIn />;
+      }
+      default: {
+        return <Spinner />;
+      }
+    }
+  };
 
   const logo = (
     <svg
@@ -44,14 +53,16 @@ const Header = () => {
   );
 
   return (
-    <Layout>
-      <Content>
-        <Link href="/" passHref>
-          <Logo>{logo}</Logo>
-        </Link>
-        {authMenu}
-      </Content>
-    </Layout>
+    <nav>
+      <Layout.Page>
+        <Content>
+          <Link href="/" passHref>
+            <Logo>{logo}</Logo>
+          </Link>
+          {renderAuthMenu()}
+        </Content>
+      </Layout.Page>
+    </nav>
   );
 };
 

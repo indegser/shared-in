@@ -6,6 +6,7 @@ import { useAuthStore } from "common/store";
 import firebase from "../src/common/firebase";
 
 import "antd/dist/antd.css";
+import Layout from "ui/Layout";
 
 export default function ({ Component, pageProps }) {
   const updateStatus = useAuthStore((s) => s.updateStatus);
@@ -18,18 +19,19 @@ export default function ({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>Great Teams Share Great Things - SharedIn</title>
+        <title>SharedIn - Experts' Bookmark</title>
         <meta
-          name="og:title"
-          content="Great Teams Share Great Things - SharedIn"
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1"
         />
+        <meta name="og:title" content="SharedIn - Experts' Bookmark" />
         <meta
           name="description"
-          content="Find out what other teams are reading and share your team's reading list"
+          content="Find the right articles and the teams that read them."
         />
         <meta
           name="og:description"
-          content="Find out what other teams are reading and share your team's reading list"
+          content="Find the right articles and the teams that read them."
         />
         <link
           href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@700;900&display=swap"
@@ -71,7 +73,9 @@ export default function ({ Component, pageProps }) {
       </Head>
       <GlobalStyle />
       <Header />
-      <Component {...pageProps} />
+      <Layout.Page>
+        <Component {...pageProps} />
+      </Layout.Page>
     </>
   );
 }

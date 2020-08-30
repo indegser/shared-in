@@ -36,6 +36,9 @@ const Layout = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: default;
+  pointer-events: none;
+  user-select: none;
 `;
 
 const Message = styled.span`
