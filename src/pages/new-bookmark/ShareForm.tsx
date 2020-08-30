@@ -47,7 +47,7 @@ const ShareForm = () => {
       form.resetFields(["url", "comment"]);
       router.push("/");
     } catch (err) {
-      message.error("Something wrong. Could not create share", 1.5);
+      message.error(`Something wrong. ${err.message}`, 1.5);
     }
   };
 
@@ -75,6 +75,7 @@ const ShareForm = () => {
         initialValues={{
           team,
           company,
+          comment: "",
         }}
       >
         <AuthorFields>

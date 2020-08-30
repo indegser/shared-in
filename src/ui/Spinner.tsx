@@ -1,5 +1,10 @@
+import { FC } from "react";
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/core";
+
+interface Props {
+  message?: string;
+}
 
 const DURATION = "1.4s";
 const OFFSET = 187;
@@ -27,6 +32,19 @@ const dash = keyframes`
  }
 `;
 
+const Layout = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Message = styled.span`
+  margin-left: 1em;
+  &:empty {
+    margin-left: 0px;
+  }
+`;
+
 const SVG = styled.svg`
   width: 20px;
   height: 20px;
@@ -42,11 +60,14 @@ const Circle = styled.circle`
     ${colors} ${DURATION} ease-in-out infinite;
 `;
 
-const Spinner = () => {
+const Spinner: FC<Props> = ({ message }) => {
   return (
-    <SVG viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
-      <Circle fill="none" strokeLinecap="round" cx="33" cy="33" r="30" />
-    </SVG>
+    <Layout>
+      <SVG viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+        <Circle fill="none" strokeLinecap="round" cx="33" cy="33" r="30" />
+      </SVG>
+      <Message>{message}</Message>
+    </Layout>
   );
 };
 
