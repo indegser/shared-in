@@ -20,6 +20,10 @@ export default function ({ Component, pageProps }) {
     <>
       <Head>
         <title>SharedIn - Experts' Bookmark</title>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1"
+        />
         <meta name="og:title" content="SharedIn - Experts' Bookmark" />
         <meta
           name="description"
