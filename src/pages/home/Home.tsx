@@ -10,13 +10,18 @@ const Layout = styled.div`
   margin: 0 auto;
   display: grid;
   grid-template-columns: auto max-content;
-  grid-gap: 0 2em;
+  grid-gap: 0em 2em;
   position: relative;
+
+  @media (max-width: 820px) {
+    grid-template-columns: auto;
+  }
 `;
 
 const ShareGrid = styled.div`
   display: grid;
   padding-bottom: 48px;
+  grid-gap: 2em;
 `;
 
 const Home = () => {

@@ -2,36 +2,46 @@ import styled from "@emotion/styled";
 import { FC, useMemo } from "react";
 import format from "date-fns/format";
 import Site from "./Site";
+import ShareAction from "./share/ShareAction";
+import { Typography } from "ui/typography";
 
 interface Props {
   share: IShare;
 }
 
 const Layout = styled.article`
-  padding: 1em 0;
-
-  & + & {
-    border-top: 1px solid #e5e5e5;
-  }
+  position: relative;
+  border: 1px solid #e9ecf0;
+  border-radius: 6px;
 `;
 
 const Attr = styled.h5`
   margin: 0;
-  font-size: 13px;
-  color: #111;
-  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: ${Typography.getTracking(14)};
+  font-variation-settings: "wght" 540;
+  color: #24292e;
+  padding: 6px 0;
 `;
 
 const Date = styled.span`
   color: #666;
-  font-weight: 500;
+  font-variation-settings: "wght" 400;
 `;
 
 const Comment = styled.p`
-  color: #111;
   font-size: 14px;
+  letter-spacing: ${Typography.getTracking(14)};
   margin: 0;
-  margin: 0.5em 0;
+  padding: 0.6em 1em;
+  color: #24292e;
+  border-top: 1px solid #e9ecf0;
+`;
+
+const ShareHeader = styled.div`
+  padding: 0 1em;
+  background: #f6f8fa;
+  border-bottom: 1px solid #e9ecf0;
 `;
 
 const Share: FC<Props> = ({ share }) => {
@@ -41,11 +51,14 @@ const Share: FC<Props> = ({ share }) => {
 
   return (
     <Layout>
-      <Attr>
-        {share.team}
-        {` @${share.company}`}
-        <Date>{` · ${date}`}</Date>
-      </Attr>
+      <ShareHeader>
+        <ShareAction share={share} />
+        <Attr>
+          {share.team}
+          {` (${share.company})`}
+          <Date>{` · ${date}`}</Date>
+        </Attr>
+      </ShareHeader>
       <Site share={share} />
       {share.comment && <Comment>{share.comment}</Comment>}
     </Layout>
