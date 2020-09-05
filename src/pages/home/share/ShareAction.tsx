@@ -10,8 +10,8 @@ interface Props {
 }
 
 const Dots = styled.div`
-  top: 1rem;
-  right: 1rem;
+  top: 0.5rem;
+  right: 0.5rem;
   position: absolute;
   width: 18px;
   height: 18px;
