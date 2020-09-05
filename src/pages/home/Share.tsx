@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { FC, useMemo } from "react";
 import format from "date-fns/format";
 import Site from "./Site";
+import ShareAction from "./share/ShareAction";
 
 interface Props {
   share: IShare;
@@ -9,6 +10,7 @@ interface Props {
 
 const Layout = styled.article`
   padding: 1em 0;
+  position: relative;
 
   & + & {
     border-top: 1px solid #e5e5e5;
@@ -41,6 +43,7 @@ const Share: FC<Props> = ({ share }) => {
 
   return (
     <Layout>
+      <ShareAction share={share} />
       <Attr>
         {share.team}
         {` @${share.company}`}

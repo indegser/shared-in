@@ -37,6 +37,13 @@ const shareApis = {
   createShare: (share: IShare) => {
     return db.collection("shares").add(share);
   },
+  updateShare: (share: IShare) => {
+    return db.collection("shares").doc(share.id).update(share);
+  },
+  deleteShare: (shareId: IShare["id"]) =>
+    db.collection("shares").doc(shareId).delete(),
+  reportContent: (shareId: IShare["id"]) =>
+    db.collection("shares").doc(shareId).update({ reported: true }),
 };
 
 const userApis = {
