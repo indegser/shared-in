@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { Button, Input, Form, message } from "antd";
 import { useRouter } from "next/router";
-import { authStoreApi, useAuthStore } from "common/store";
+import { useAuthStore } from "common/store";
 import api from "common/api";
 import { useState } from "react";
 
@@ -25,7 +25,7 @@ const ShareForm = () => {
 
   const onSubmit = async (values) => {
     const { url, comment, company, team } = values;
-    const { uid } = authStoreApi.getState().user;
+    const { uid } = useAuthStore.getState().user;
 
     setDisabled(true);
 

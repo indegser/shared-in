@@ -1,7 +1,7 @@
 import firebase from "./firebase";
+import { useAuthStore } from "./store";
 
 const db = firebase.firestore();
-import { authStoreApi } from "./store";
 
 const snapshotToDocs = <T>(querySnapshot: firebase.firestore.QuerySnapshot) => {
   return querySnapshot.docs.map((d) => ({
@@ -60,7 +60,7 @@ const userApis = {
     return db.collection("users").doc(user.uid).set(user);
   },
   updateUserBio: ({ team, company }) => {
-    const { user } = authStoreApi.getState();
+    const { user } = useAuthStore.getState();
     if (user.team === team && user.company === company) {
       return;
     }

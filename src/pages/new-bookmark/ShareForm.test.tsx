@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import ShareForm from "./ShareForm";
-import { authStoreApi } from "common/store";
+import { useAuthStore } from "common/store";
 import api from "common/api";
 
 jest.mock("common/api");
@@ -14,7 +14,7 @@ describe("ShareForm", () => {
       company: "MockCompany",
     } as IUser;
 
-    authStoreApi.setState({
+    useAuthStore.setState({
       user: mockUser,
     });
 
@@ -31,7 +31,7 @@ describe("ShareForm", () => {
   it("calls updateUserBio when team is changed", async () => {
     // Mock
     const mockUser = { team: "A", company: "A" } as IUser;
-    authStoreApi.setState({ user: mockUser });
+    useAuthStore.setState({ user: mockUser });
 
     // Given
     render(<ShareForm />);
@@ -52,7 +52,7 @@ describe("ShareForm", () => {
   it("calls updateUserBio when company is changed", async () => {
     // Mock
     const mockUser = { team: "A", company: "A" } as IUser;
-    authStoreApi.setState({ user: mockUser });
+    useAuthStore.setState({ user: mockUser });
 
     // Given
     render(<ShareForm />);
