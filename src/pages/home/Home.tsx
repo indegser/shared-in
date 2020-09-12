@@ -1,9 +1,9 @@
 import styled from "@emotion/styled";
 import Share from "./Share";
-import useSWR from "swr";
-import api from "common/api";
 import Spinner from "ui/Spinner";
 import About from "./About";
+import { useEffect } from "react";
+import { useShareStore } from "common/share.hooks";
 
 const Layout = styled.div`
   max-width: 960px;
@@ -25,16 +25,21 @@ const ShareGrid = styled.div`
 `;
 
 const Home = () => {
-  const { data } = useSWR("shares", api.fetchShares);
+  const fetch = useShareStore((s) => s.fetch);
+  const shares = useShareStore((s) => s.shares);
 
-  if (!data) {
+  useEffect(() => {
+    fetch();
+  }, []);
+
+  if (!shares) {
     return <Spinner message="Getting bookmarks from great teams" />;
   }
 
   return (
     <Layout>
       <ShareGrid>
-        {data?.map((share) => (
+        {shares?.map((share) => (
           <Share key={share.id} share={share} />
         ))}
       </ShareGrid>

@@ -1,24 +1,14 @@
 import firebase from "./firebase";
+import { useAuthStore } from "./store";
 
 const db = firebase.firestore();
-import { authStoreApi } from "./store";
 
-const converQuerySnapshotToArrayOfDocs = <T>(
-  querySnapshot: firebase.firestore.QuerySnapshot
-) => {
+const snapshotToDocs = <T>(querySnapshot: firebase.firestore.QuerySnapshot) => {
   return querySnapshot.docs.map((d) => ({
     id: d.id,
     ...(d.data() as T),
   }));
 };
-
-const fetchShares = async () =>
-  firebase
-    .firestore()
-    .collection("shares")
-    .orderBy("createdAt", "desc")
-    .get()
-    .then((snapshot) => converQuerySnapshotToArrayOfDocs<IShare>(snapshot));
 
 const fetchOpenGraph = async (url: string) => {
   const response = await fetch("/api/og", {
@@ -34,6 +24,20 @@ const fetchOpenGraph = async (url: string) => {
 };
 
 const shareApis = {
+  subscribeShares: (callback) => {
+    return db
+      .collection("shares")
+      .orderBy("createdAt", "desc")
+      .onSnapshot((snapshot) => {
+        callback(snapshotToDocs<IShare>(snapshot));
+      });
+  },
+  fetchShares: () =>
+    db
+      .collection("shares")
+      .orderBy("createdAt", "desc")
+      .get()
+      .then(snapshotToDocs) as Promise<IShare[]>,
   createShare: (share: IShare) => {
     return db.collection("shares").add(share);
   },
@@ -56,7 +60,7 @@ const userApis = {
     return db.collection("users").doc(user.uid).set(user);
   },
   updateUserBio: ({ team, company }) => {
-    const { user } = authStoreApi.getState();
+    const { user } = useAuthStore.getState();
     if (user.team === team && user.company === company) {
       return;
     }
@@ -73,7 +77,6 @@ const userApis = {
 
 export default {
   fetchOpenGraph,
-  fetchShares,
   ...shareApis,
   ...userApis,
 };

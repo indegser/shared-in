@@ -1,9 +1,10 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Dropdown, Menu, message } from "antd";
 import styled from "@emotion/styled";
 import { useAuthStore } from "common/store";
 import { MenuProps } from "antd/lib/menu";
 import api from "common/api";
+import { useShareStore } from "common/share.hooks";
 
 interface Props {
   share: IShare;
@@ -32,11 +33,15 @@ const MenuItem = styled(Menu.Item)`
 `;
 
 const ShareAction: FC<Props> = ({ share }) => {
+  const refetch = useShareStore((s) => s.fetch);
   const isOwned = useAuthStore((s) => s.user?.uid === share.uid);
 
-  const handleDelete = () => {
-    api.deleteShare(share.id);
-    location.reload();
+  const handleDelete = async () => {
+    try {
+      await api.deleteShare(share.id);
+      message.success("Deleted content");
+      refetch();
+    } catch (err) {}
   };
 
   const handleClick: MenuProps["onClick"] = async ({ key }) => {

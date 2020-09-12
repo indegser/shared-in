@@ -1,8 +1,9 @@
 import styled from "@emotion/styled";
 import { Button, Input, Form, message } from "antd";
 import { useRouter } from "next/router";
-import { authStoreApi, useAuthStore } from "common/store";
+import { useAuthStore } from "common/store";
 import api from "common/api";
+import { useState } from "react";
 
 const Layout = styled.div`
   padding: 1em;
@@ -20,16 +21,20 @@ const ShareForm = () => {
   const router = useRouter();
   const { team, company } = useAuthStore((s) => s.user);
   const [form] = Form.useForm();
+  const [disabled, setDisabled] = useState(false);
 
   const onSubmit = async (values) => {
     const { url, comment, company, team } = values;
-    const { uid } = authStoreApi.getState().user;
+    const { uid } = useAuthStore.getState().user;
+
+    setDisabled(true);
 
     let openGraph;
     try {
       openGraph = await api.fetchOpenGraph(url);
     } catch (err) {
       message.error("Could not fetch information from link", 1.5);
+      setDisabled(false);
       return;
     }
 
@@ -49,6 +54,7 @@ const ShareForm = () => {
     } catch (err) {
       message.error(`Something wrong. ${err.message}`, 1.5);
     }
+    setDisabled(false);
   };
 
   const authorFields = [
@@ -97,6 +103,7 @@ const ShareForm = () => {
             type="primary"
             data-testid="submit"
             htmlType="submit"
+            disabled={disabled}
           >
             Share
           </Button>

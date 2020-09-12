@@ -8,14 +8,14 @@ export enum AuthState {
   Authenticated,
 }
 
-export interface IAuthStore {
+export type AuthStore = {
   user?: IUser;
   status: AuthState;
   fetchUser: (uid: string) => void;
   updateStatus: (user: User) => void;
-}
+};
 
-export const [useAuthStore, authStoreApi] = create<IAuthStore>((set, get) => ({
+export const useAuthStore = create<AuthStore>((set, get) => ({
   user: null,
   status: AuthState.NotSet,
   fetchUser: async (uid) => {
