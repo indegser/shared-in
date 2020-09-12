@@ -4,6 +4,7 @@ import styled from "@emotion/styled";
 import { useAuthStore } from "common/store";
 import { MenuProps } from "antd/lib/menu";
 import api from "common/api";
+import { useShareStore } from "common/share.hooks";
 
 interface Props {
   share: IShare;
@@ -32,14 +33,15 @@ const MenuItem = styled(Menu.Item)`
 `;
 
 const ShareAction: FC<Props> = ({ share }) => {
-  const [isDeleting, setIsDeleting] = useState(false);
+  const refetch = useShareStore((s) => s.fetch);
   const isOwned = useAuthStore((s) => s.user?.uid === share.uid);
 
   const handleDelete = async () => {
-    setIsDeleting(true);
-    await api.deleteShare(share.id);
-    message.success("Deleted content.");
-    setIsDeleting(false);
+    try {
+      await api.deleteShare(share.id);
+      message.success("Deleted content");
+      refetch();
+    } catch (err) {}
   };
 
   const handleClick: MenuProps["onClick"] = async ({ key }) => {
@@ -54,11 +56,7 @@ const ShareAction: FC<Props> = ({ share }) => {
     }
   };
 
-  const deleteAction = (
-    <MenuItem key="delete" disabled={isDeleting}>
-      Delete
-    </MenuItem>
-  );
+  const deleteAction = <MenuItem key="delete">Delete</MenuItem>;
 
   const overlay = (
     <Menu onClick={handleClick} style={{ minWidth: 180 }}>
