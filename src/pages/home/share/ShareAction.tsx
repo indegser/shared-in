@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Dropdown, Menu, message } from "antd";
 import styled from "@emotion/styled";
 import { useAuthStore } from "common/store";
@@ -32,11 +32,14 @@ const MenuItem = styled(Menu.Item)`
 `;
 
 const ShareAction: FC<Props> = ({ share }) => {
+  const [isDeleting, setIsDeleting] = useState(false);
   const isOwned = useAuthStore((s) => s.user?.uid === share.uid);
 
-  const handleDelete = () => {
-    api.deleteShare(share.id);
-    location.reload();
+  const handleDelete = async () => {
+    setIsDeleting(true);
+    await api.deleteShare(share.id);
+    message.success("Deleted content.");
+    setIsDeleting(false);
   };
 
   const handleClick: MenuProps["onClick"] = async ({ key }) => {
@@ -51,7 +54,11 @@ const ShareAction: FC<Props> = ({ share }) => {
     }
   };
 
-  const deleteAction = <MenuItem key="delete">Delete</MenuItem>;
+  const deleteAction = (
+    <MenuItem key="delete" disabled={isDeleting}>
+      Delete
+    </MenuItem>
+  );
 
   const overlay = (
     <Menu onClick={handleClick} style={{ minWidth: 180 }}>
